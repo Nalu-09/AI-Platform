@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -24,114 +23,113 @@
   .brand .sub{font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;color:var(--muted);text-transform:uppercase}
   .keybtn{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;color:var(--muted);background:var(--panel);
     border:1px solid var(--line);border-radius:100px;padding:7px 13px;cursor:pointer}
-  .keybtn.on{color:var(--void);background:var(--sage);border-color:var(--sage);font-weight:700}
-
   .keybox{display:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:8px 0 4px}
   .keybox.show{display:block}
   .keybox p{font-size:.76rem;color:var(--muted);margin-bottom:9px;line-height:1.6}
   .keybox input{width:100%;background:var(--void);border:1px solid var(--line);color:var(--cream);border-radius:8px;padding:11px;font-family:var(--mono);font-size:.8rem}
   .keybox .mini{font-family:var(--mono);font-size:.58rem;color:var(--idle);margin-top:8px}
-
-  .ns{margin:12px 0 18px;border:1px solid var(--line);border-radius:12px;padding:12px 15px;
-    background:linear-gradient(180deg,rgba(198,161,91,.06),transparent)}
+  .ns{margin:12px 0 18px;border:1px solid var(--line);border-radius:12px;padding:12px 15px;background:linear-gradient(180deg,rgba(198,161,91,.06),transparent)}
   .ns .tag{font-family:var(--mono);font-size:.58rem;letter-spacing:.22em;color:var(--brass);text-transform:uppercase}
   .ns h1{font-family:"Shippori Mincho",serif;font-weight:700;font-size:1.05rem;margin-top:3px}
-
   .secretary{background:var(--panel2);border:1px solid var(--brass-dim);border-radius:14px;padding:16px;margin-bottom:18px}
   .secretary .lbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;color:var(--brass);text-transform:uppercase;margin-bottom:9px}
-  .secretary select,.secretary textarea{width:100%;background:var(--void);border:1px solid var(--line);color:var(--cream);
-    border-radius:9px;padding:11px 12px;font-family:inherit;font-size:.9rem;margin-bottom:9px}
+  .secretary select,.secretary textarea{width:100%;background:var(--void);border:1px solid var(--line);color:var(--cream);border-radius:9px;padding:11px 12px;font-family:inherit;font-size:.9rem;margin-bottom:9px}
   .secretary textarea{min-height:72px;resize:vertical;line-height:1.6}
-  .secretary select:focus,.secretary textarea:focus{outline:none;border-color:var(--brass)}
-  .go{width:100%;background:var(--brass);color:#1c1810;border:none;border-radius:10px;padding:14px;
-    font-family:inherit;font-weight:700;font-size:.95rem;cursor:pointer;transition:filter .15s}
-  .go:hover{filter:brightness(1.06)} .go:active{transform:scale(.99)} .go:disabled{opacity:.5;cursor:default}
-
-  .section-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.24em;color:var(--muted);text-transform:uppercase;
-    margin:0 2px 11px;display:flex;align-items:center;gap:10px}
+  .go{width:100%;background:var(--brass);color:#1c1810;border:none;border-radius:10px;padding:14px;font-family:inherit;font-weight:700;font-size:.95rem;cursor:pointer}
+  .section-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.24em;color:var(--muted);text-transform:uppercase;margin:0 2px 11px;display:flex;align-items:center;gap:10px}
   .section-label::after{content:"";flex:1;height:1px;background:var(--line)}
   .depts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-  .dept{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass-dim);border-radius:11px;
-    padding:12px 13px;cursor:pointer;transition:border-color .16s,background .16s}
-  .dept:hover{border-color:var(--brass-dim);background:var(--panel2)} .dept.sel{border-color:var(--brass);border-left-color:var(--brass);background:var(--panel2)}
+  .dept{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass-dim);border-radius:11px;padding:12px 13px;cursor:pointer}
+  .dept.sel{border-color:var(--brass);border-left-color:var(--brass);background:var(--panel2)}
   .dept .ix{font-family:var(--mono);font-size:.58rem;color:var(--brass-dim)}
   .dept .nm{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.94rem;margin:2px 0 4px}
   .dept .ds{font-size:.7rem;color:var(--muted);line-height:1.45}
-
   .out{margin-top:20px}
   .job{background:var(--panel);border:1px solid var(--line);border-radius:13px;margin-bottom:12px;overflow:hidden}
   .job .jh{padding:12px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
   .job .jh .who{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.92rem}
-  .job .jh .stt{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;padding:3px 9px;border-radius:100px;border:1px solid var(--line);color:var(--muted)}
-  .stt.run{color:var(--brass);border-color:var(--brass-dim)} .stt.done{color:var(--void);background:var(--sage);border-color:var(--sage)} .stt.err{color:#E58B6E;border-color:#7a4a3a}
+  .job .jh .stt{font-family:var(--mono);font-size:.6rem;padding:3px 9px;border-radius:100px;border:1px solid var(--line);color:var(--muted)}
+  .stt.done{color:var(--void);background:var(--sage);border-color:var(--sage)} .stt.err{color:#E58B6E;border-color:#7a4a3a}
   .job .req{padding:10px 15px;font-size:.78rem;color:var(--muted);border-bottom:1px solid var(--line);background:var(--void)}
   .job .res{padding:14px 15px;font-size:.9rem;line-height:1.85;white-space:pre-wrap}
-  .job .copy{margin:0 15px 14px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:8px 14px;font-family:inherit;font-size:.78rem;cursor:pointer}
-  .job .copy:hover{border-color:var(--brass-dim);color:var(--cream)}
-  .spin{display:inline-block;width:11px;height:11px;border:2px solid var(--brass-dim);border-top-color:var(--brass);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-1px;margin-right:6px}
-  @keyframes sp{to{transform:rotate(360deg)}}
   footer{text-align:center;margin-top:26px;color:var(--idle);font-size:.72rem;line-height:1.7}
   footer .fmk{font-family:"Cormorant Garamond",serif;letter-spacing:.14em;color:var(--muted);font-size:.9rem}
-  @media (prefers-reduced-motion:reduce){.spin{animation:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <header>
     <div class="brand"><span class="star">✦</span><span class="name">Nalu-09</span><span class="sub">AI企業</span></div>
     <button class="keybtn" id="keyToggle">APIキー設定</button>
   </header>
-
   <div class="keybox" id="keybox">
-    <p>各部門で「本物のAI」を動かすには、あなたのAnthropic APIキーを入れてください。未入力でも、部門選択と指示の操作は確認できます（成果物はサンプル表示）。キーはこの端末の中だけで使われ、どこにも送信・保存しません。</p>
+    <p>各部門で本物のAIを動かすには、あなたのAnthropic APIキーを入れてください。未入力でも操作は確認できます。キーはこの端末内でのみ使い、送信・保存しません。</p>
     <input id="apiKey" type="password" placeholder="sk-ant-... （任意）" autocomplete="off">
-    <div class="mini">キーは console.anthropic.com で取得。※ブラウザから直接呼ぶ簡易版のため、本番運用では中継サーバー経由を推奨（設計書v3の「器」）。</div>
+    <div class="mini">※GitHub Pagesから直接呼ぶ簡易版のため、実運用では中継サーバー経由を推奨。</div>
   </div>
-
-  <div class="ns"><span class="tag">★ 北極星</span><h1>街の会員制生活基盤 ── 1日のすべてを、Nalu-09で</h1></div>
+  <div class="ns"><span class="tag">★ 北極星</span><h1>飲食に留まらない、会員制事業の確立 ── 1日のすべてを、Nalu-09で</h1></div>
 
   <div class="secretary">
     <div class="lbl">秘書・指揮官｜指示を出す</div>
-    <select id="depSelect"></select>
+    <select id="depSelect">
+      <option value="research">01 リサーチ部</option>
+      <option value="content">02 コンテンツ制作部</option>
+      <option value="pm">03 制作進行部</option>
+      <option value="analytics">04 分析部</option>
+      <option value="offer">05 オファー企画部</option>
+      <option value="cs">06 CS・配信部</option>
+      <option value="support">07 顧客対応部</option>
+      <option value="finance">08 経理・数値管理部</option>
+      <option value="brand">09 世界観管理部</option>
+      <option value="legal">10 法務・コンプラ部</option>
+      <option value="bizdev">11 事業開発部</option>
+    </select>
     <textarea id="order" placeholder="例：飲食店オーナー向けに、運営がバラバラな“痛み”のThreads投稿を1本つくって"></textarea>
     <button class="go" id="runBtn">この部門を動かす</button>
   </div>
 
-  <div class="section-label">部門を選ぶ / Departments</div>
-  <div class="depts" id="depts"></div>
+  <div class="section-label">部門を選ぶ / DEPARTMENTS</div>
+  <div class="depts">
+    <div class="dept" data-id="research"><div class="ix">01</div><div class="nm">リサーチ部</div><div class="ds">競合・トレンド・隙間</div></div>
+    <div class="dept" data-id="content"><div class="ix">02</div><div class="nm">コンテンツ制作部</div><div class="ds">投稿・キャプション</div></div>
+    <div class="dept" data-id="pm"><div class="ix">03</div><div class="nm">制作進行部</div><div class="ds">動画・画像の制作図</div></div>
+    <div class="dept" data-id="analytics"><div class="ix">04</div><div class="nm">分析部</div><div class="ds">数値→次の方針</div></div>
+    <div class="dept" data-id="offer"><div class="ix">05</div><div class="nm">オファー企画部</div><div class="ds">商品・料金・入口</div></div>
+    <div class="dept" data-id="cs"><div class="ix">06</div><div class="nm">CS・配信部</div><div class="ds">LINE配信・返信文</div></div>
+    <div class="dept" data-id="support"><div class="ix">07</div><div class="nm">顧客対応部</div><div class="ds">DM・問い合わせ返信</div></div>
+    <div class="dept" data-id="finance"><div class="ix">08</div><div class="nm">経理・数値管理部</div><div class="ds">売上・費用の管理</div></div>
+    <div class="dept" data-id="brand"><div class="ix">09</div><div class="nm">世界観管理部</div><div class="ds">トーン・世界観の統一</div></div>
+    <div class="dept" data-id="legal"><div class="ix">10</div><div class="nm">法務・コンプラ部</div><div class="ds">規約・個人情報</div></div>
+    <div class="dept" data-id="bizdev"><div class="ix">11</div><div class="nm">事業開発部</div><div class="ds">次の事業の種</div></div>
+  </div>
 
   <div class="out" id="out"></div>
-
   <footer><div class="fmk">Nalu-09</div>社長は秘書1人に指示するだけ<br>合同会社Nalu-09専属 AI企業プラットフォーム</footer>
 </div>
 
 <script>
-(function(){
-  var DEPTS=[
-    {id:"research",ix:"01",nm:"リサーチ部",ds:"競合・トレンド・隙間",sys:"あなたはNalu-09のリサーチ部AI。競合や市場、狙うべき隙間を、具体的・簡潔に、実行できる粒度で調査・提案する。"},
-    {id:"content",ix:"02",nm:"コンテンツ制作部",ds:"投稿・キャプション",sys:"あなたはNalu-09のコンテンツ制作部AI。LIEN（会員・予約管理システム）を売るための投稿を作る。トーンは押し売りせず、実際に自分のイベントで使っている運営者の一人称。ハッシュタグは最大5個。"},
-    {id:"pm",ix:"03",nm:"制作進行部",ds:"動画・画像の制作図",ds2:"",sys:"あなたはNalu-09の制作進行部AI。リールや画像の、各カット/各スライドの文言・配置・秒数・色・遷移まで含む、Canvaにそのまま組める制作図を作る。"},
-    {id:"analytics",ix:"04",nm:"分析部",ds:"数値→次の方針",sys:"あなたはNalu-09の分析部AI。渡された数値や状況から、伸ばす型・捨てる型を判定し、次に何をすべきかを断定的に提案する。"},
-    {id:"offer",ix:"05",nm:"オファー企画部",ds:"商品・料金・入口",sys:"あなたはNalu-09のオファー企画部AI。LIENの商品設計・料金の見せ方・リードマグネット・入口商品を設計する。"},
-    {id:"cs",ix:"06",nm:"CS・配信部",ds:"LINE配信・返信文",sys:"あなたはNalu-09のCS・配信部AI。LINEステップの配信文・フォーム・タグ設計・返信文の下書きを作る。"},
-    {id:"support",ix:"07",nm:"顧客対応部",ds:"DM・問い合わせ返信",sys:"あなたはNalu-09の顧客対応部AI。DM・コメント・問い合わせへの、丁寧で売り込みすぎない返信の下書きを作る。"},
-    {id:"finance",ix:"08",nm:"経理・数値管理部",ds:"売上・費用の管理",sys:"あなたはNalu-09の経理・数値管理部AI。売上・広告費・ツール代の整理、収支の考え方を、簡潔に示す。"},
-    {id:"brand",ix:"09",nm:"世界観管理部",ds:"トーン・世界観の統一",sys:"あなたはNalu-09の世界観管理部AI。Lumière（灯り）と『街の時間を束ねる』世界観に沿って、言葉・色・トーンを統一・監修する。"},
-    {id:"legal",ix:"10",nm:"法務・コンプラ部",ds:"規約・個人情報",sys:"あなたはNalu-09の法務・コンプライアンス部AI。個人情報の扱い・利用規約・プライバシーの観点で、注意点と必要な整備を示す。あなたは弁護士ではなく、最終判断は専門家に確認するよう添える。"},
-    {id:"bizdev",ix:"11",nm:"事業開発部",ds:"次の事業の種",sys:"あなたはNalu-09の事業開発部AI。北極星（街の会員制生活基盤）に向けて、次の事業の種や布石を構想する。"}
-  ];
-  var CONTEXT="【Nalu-09の前提】会員・予約管理システム『LIEN』を売る。売った先の顧客データには触れない（憲法）。北極星は『街の会員制生活基盤＝1日のすべてをNalu-09で』。社長は営業が苦手で会話を避けたい。発信はThreadsとInstagram。";
+var SYS={research:"あなたはNalu-09のリサーチ部AI。競合・市場・隙間を具体的簡潔に調査提案する。",
+content:"あなたはNalu-09のコンテンツ制作部AI。LIEN（会員・予約管理システム）を売る投稿を作る。押し売りせず、自分のイベントで実際に使う運営者の一人称。ハッシュタグ最大5個。",
+pm:"あなたはNalu-09の制作進行部AI。各カット/各スライドの文言・配置・秒数・色・遷移まで含む、Canvaに組める制作図を作る。",
+analytics:"あなたはNalu-09の分析部AI。数値から伸ばす型・捨てる型を断定的に提案する。",
+offer:"あなたはNalu-09のオファー企画部AI。商品設計・料金の見せ方・リードマグネット・入口商品を設計する。",
+cs:"あなたはNalu-09のCS・配信部AI。LINE配信文・フォーム・タグ設計・返信下書きを作る。",
+support:"あなたはNalu-09の顧客対応部AI。DM・問い合わせへの丁寧で売り込みすぎない返信下書きを作る。",
+finance:"あなたはNalu-09の経理部AI。売上・広告費・ツール代の整理と収支の考え方を簡潔に示す。",
+brand:"あなたはNalu-09の世界観管理部AI。Lumière（灯り）と『街の時間を束ねる』世界観で言葉・色・トーンを統一監修する。",
+legal:"あなたはNalu-09の法務部AI。個人情報・規約・プライバシーの注意点と整備を示す。弁護士ではなく最終判断は専門家に、と添える。",
+bizdev:"あなたはNalu-09の事業開発部AI。北極星（街の会員制生活基盤）に向けた次事業の種を構想する。"};
+var CTX="【前提】会員・予約管理システムLIENを売る。売った先の顧客データには触れない（憲法）。北極星は『街の会員制生活基盤＝1日すべてをNalu-09で』。社長は営業が苦手で会話を避けたい。発信はThreadsとInstagram。";
 
-  var depsEl=document.getElementById('depts'), sel=document.getElementById('depSelect'), selectedId=DEPTS[0].id;
-  DEPTS.forEach(function(d){
-    var el=document.createElement('div'); el.className='dept'; el.setAttribute('data-id',d.id);
-    el.innerHTML='<div class="ix">'+d.ix+'</div><div class="nm">'+d.nm+'</div><div class="ds">'+d.ds+'</div>';
-    el.addEventListener('click',function(){selectDept(d.id);});
-    depsEl.appendChild(el);
-    var o=document.createElement('option'); o.value=d.id; o.textContent=d.ix+' '+d.nm; sel.appendChild(o);
-  });
-  function selectDept(id){selectedId=id; sel.value=id;
-    document.querySelectorAll('.dept').forEach(function(x){x.classList.toggle('sel',x.getAttribute('data-id')===id);});}
-  sel.addEventListener('change',function(){selectDept(sel.value);});
-  selectDept(selectedId);
+document.getElementById('keyToggle').onclick=function(){document.getElementById('keybox').classList.toggle('show');};
+var sel=document.getElementById('depSelect');
+var cards=document.querySelectorAll('.dept');
+for(var i=0;i<cards.length;i++){(function(c){c.onclick=function(){sel.value=c.getAttribute('data-id');mark();};})(cards[i]);}
+function mark(){for(var i=0;i<cards.length;i++){cards[i].className='dept'+(cards[i].getAttribute('data-id')===sel.value?' sel':'');}}
+sel.onchange=mark; mark();
+
+document.getElementById('runBtn').onclick=function(){
+  var id=sel.value, order=document.getElementById('order').value.trim();
+  if(!order){document.getElementById('order').focus();return;}
+  var key=document.getElementById('apiKey').value.trim();
+  var out=document.getElementById('out');
