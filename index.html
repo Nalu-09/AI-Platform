@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -24,20 +25,32 @@
   select,textarea{width:100%;background:var(--void);border:1px solid var(--line);color:var(--cream);border-radius:9px;padding:11px 12px;font-family:inherit;font-size:.9rem;margin-bottom:9px}
   textarea{min-height:72px;resize:vertical;line-height:1.6}
   .go{width:100%;background:var(--brass);color:#1c1810;border:none;border-radius:10px;padding:14px;font-family:inherit;font-weight:700;font-size:.95rem;cursor:pointer}
+  .go:disabled{opacity:.5;cursor:default}
   .sl{font-family:var(--mono);font-size:.62rem;letter-spacing:.24em;color:var(--muted);text-transform:uppercase;margin:0 2px 11px;display:flex;align-items:center;gap:10px}
   .sl::after{content:"";flex:1;height:1px;background:var(--line)}
   .depts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-  .dept{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass-dim);border-radius:11px;padding:12px 13px}
+  .dept{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass-dim);border-radius:11px;padding:12px 13px;cursor:pointer;transition:border-color .16s,background .16s}
+  .dept:hover{border-color:var(--brass-dim);background:var(--panel2)}
+  .dept.active{border-color:var(--brass);border-left-color:var(--brass);background:var(--panel2)}
   .dept .ix{font-family:var(--mono);font-size:.58rem;color:var(--brass-dim)}
   .dept .nm{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.94rem;margin:2px 0 4px}
   .dept .ds{font-size:.7rem;color:var(--muted);line-height:1.45}
-  .out{margin-top:20px}
+  .dept .cnt{font-family:var(--mono);font-size:.56rem;color:var(--idle);margin-top:5px}
+  .filterbar{display:none;align-items:center;justify-content:space-between;margin:20px 2px 8px;font-size:.8rem;color:var(--muted)}
+  .filterbar.show{display:flex}
+  .filterbar button{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:5px 12px;font-family:inherit;font-size:.74rem;cursor:pointer}
+  .out{margin-top:12px}
   .job{background:var(--panel);border:1px solid var(--line);border-radius:13px;margin-bottom:12px;overflow:hidden}
+  .job.hide{display:none}
   .job .jh{padding:12px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
   .job .who{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.92rem}
-  .job .stt{font-family:var(--mono);font-size:.6rem;padding:3px 9px;border-radius:100px;border:1px solid var(--line);color:var(--muted)}
+  .job .stt{font-family:var(--mono);font-size:.6rem;padding:3px 9px;border-radius:100px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+  .job .stt.run{color:var(--brass);border-color:var(--brass-dim)}
+  .job .stt.done{color:var(--void);background:var(--sage);border-color:var(--sage)}
+  .job .stt.err{color:#E58B6E;border-color:#7a4a3a}
   .job .req{padding:10px 15px;font-size:.78rem;color:var(--muted);border-bottom:1px solid var(--line);background:var(--void)}
   .job .res{padding:14px 15px;font-size:.9rem;line-height:1.85;white-space:pre-wrap}
+  .job .copy{margin:0 15px 14px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:8px 14px;font-family:inherit;font-size:.78rem;cursor:pointer}
   footer{text-align:center;margin-top:26px;color:var(--idle);font-size:.72rem;line-height:1.7}
   footer .fmk{font-family:"Cormorant Garamond",serif;letter-spacing:.14em;color:var(--muted);font-size:.9rem}
 </style>
@@ -63,30 +76,34 @@
       <option value="bizdev">11 事業開発部</option>
     </select>
     <textarea id="order" placeholder="例：飲食店オーナー向けに、運営がバラバラな痛みのThreads投稿を1本つくって"></textarea>
-    <button class="go" onclick="RUN()">この部門を動かす</button>
+    <button class="go" id="goBtn" onclick="RUN()">この部門を動かす</button>
   </div>
 
   <div class="sl">部門を選ぶ / DEPARTMENTS</div>
-  <div class="depts">
-    <div class="dept"><div class="ix">01</div><div class="nm">リサーチ部</div><div class="ds">競合・トレンド・隙間</div></div>
-    <div class="dept"><div class="ix">02</div><div class="nm">コンテンツ制作部</div><div class="ds">投稿・キャプション</div></div>
-    <div class="dept"><div class="ix">03</div><div class="nm">制作進行部</div><div class="ds">動画・画像の制作図</div></div>
-    <div class="dept"><div class="ix">04</div><div class="nm">分析部</div><div class="ds">数値→次の方針</div></div>
-    <div class="dept"><div class="ix">05</div><div class="nm">オファー企画部</div><div class="ds">商品・料金・入口</div></div>
-    <div class="dept"><div class="ix">06</div><div class="nm">CS・配信部</div><div class="ds">LINE配信・返信文</div></div>
-    <div class="dept"><div class="ix">07</div><div class="nm">顧客対応部</div><div class="ds">DM・問い合わせ返信</div></div>
-    <div class="dept"><div class="ix">08</div><div class="nm">経理・数値管理部</div><div class="ds">売上・費用の管理</div></div>
-    <div class="dept"><div class="ix">09</div><div class="nm">世界観管理部</div><div class="ds">トーン・世界観の統一</div></div>
-    <div class="dept"><div class="ix">10</div><div class="nm">法務・コンプラ部</div><div class="ds">規約・個人情報</div></div>
-    <div class="dept"><div class="ix">11</div><div class="nm">事業開発部</div><div class="ds">次の事業の種</div></div>
+  <div class="depts" id="depts">
+    <div class="dept" data-id="research"><div class="ix">01</div><div class="nm">リサーチ部</div><div class="ds">競合・トレンド・隙間</div><div class="cnt"></div></div>
+    <div class="dept" data-id="content"><div class="ix">02</div><div class="nm">コンテンツ制作部</div><div class="ds">投稿・キャプション</div><div class="cnt"></div></div>
+    <div class="dept" data-id="pm"><div class="ix">03</div><div class="nm">制作進行部</div><div class="ds">動画・画像の制作図</div><div class="cnt"></div></div>
+    <div class="dept" data-id="analytics"><div class="ix">04</div><div class="nm">分析部</div><div class="ds">数値→次の方針</div><div class="cnt"></div></div>
+    <div class="dept" data-id="offer"><div class="ix">05</div><div class="nm">オファー企画部</div><div class="ds">商品・料金・入口</div><div class="cnt"></div></div>
+    <div class="dept" data-id="cs"><div class="ix">06</div><div class="nm">CS・配信部</div><div class="ds">LINE配信・返信文</div><div class="cnt"></div></div>
+    <div class="dept" data-id="support"><div class="ix">07</div><div class="nm">顧客対応部</div><div class="ds">DM・問い合わせ返信</div><div class="cnt"></div></div>
+    <div class="dept" data-id="finance"><div class="ix">08</div><div class="nm">経理・数値管理部</div><div class="ds">売上・費用の管理</div><div class="cnt"></div></div>
+    <div class="dept" data-id="brand"><div class="ix">09</div><div class="nm">世界観管理部</div><div class="ds">トーン・世界観の統一</div><div class="cnt"></div></div>
+    <div class="dept" data-id="legal"><div class="ix">10</div><div class="nm">法務・コンプラ部</div><div class="ds">規約・個人情報</div><div class="cnt"></div></div>
+    <div class="dept" data-id="bizdev"><div class="ix">11</div><div class="nm">事業開発部</div><div class="ds">次の事業の種</div><div class="cnt"></div></div>
   </div>
 
+  <div class="filterbar" id="filterbar"><span id="filterlabel"></span><button onclick="showAll()">すべて表示</button></div>
   <div class="out" id="out"></div>
   <footer><div class="fmk">Nalu-09</div>社長は秘書1人に指示するだけ<br>AI企業プラットフォーム</footer>
 </div>
 
 <script>
 var GAS_URL = "https://script.google.com/macros/s/AKfycbzCDC1FeOMmvpQbsIkyn2a7N5EIp4ofukT_q23dtfxoU-RKYNPEURTM-1JnjHEuhFhxLQ/exec";
+
+var NAMES = {research:"リサーチ部",content:"コンテンツ制作部",pm:"制作進行部",analytics:"分析部",offer:"オファー企画部",cs:"CS・配信部",support:"顧客対応部",finance:"経理・数値管理部",brand:"世界観管理部",legal:"法務・コンプラ部",bizdev:"事業開発部"};
+var IX = {research:"01",content:"02",pm:"03",analytics:"04",offer:"05",cs:"06",support:"07",finance:"08",brand:"09",legal:"10",bizdev:"11"};
 
 var SYS = {
   research:"あなたはNalu-09のリサーチ部AI。競合・市場・隙間を具体的簡潔に調査提案する。",
@@ -101,37 +118,97 @@ var SYS = {
   legal:"あなたはNalu-09の法務部AI。個人情報・規約・プライバシーの注意点と整備を示す。弁護士ではなく最終判断は専門家に、と添える。",
   bizdev:"あなたはNalu-09の事業開発部AI。飲食にとどまらない会員制事業の確立に向けた次事業の種を構想する。"
 };
-var CTX = "【前提】会員・予約管理システムLIENを売る。売った先の顧客データには触れない。飲食にとどまらず会員制事業を確立するのが目標。社長は営業が苦手で会話を避けたい。発信はThreadsとInstagram。日本語でそのまま使える完成品を返す。前置き不要。";
+var CTX = "【前提】会員・予約管理システムLIENを売る。売った先の顧客データには触れない。飲食にとどまらず会員制事業を確立するのが目標。社長は営業が苦手で会話を避けたい。発信はThreadsとInstagram。日本語でそのまま使える完成品を返す。前置きや途中で切らず、最後まで言い切って完成させる。";
+
+var counts = {};
+var activeFilter = null;
 
 function RUN() {
-  var dep = document.getElementById('dep');
-  var id = dep.value;
-  var who = dep.options[dep.selectedIndex].text;
-  var order = document.getElementById('order').value;
-  if (!order) { document.getElementById('order').focus(); return; }
+  var btn = document.getElementById('goBtn');
+  if (btn.disabled) return;
+  var id = document.getElementById('dep').value;
+  var orderEl = document.getElementById('order');
+  var order = orderEl.value;
+  if (!order) { orderEl.focus(); return; }
+
+  btn.disabled = true;
+  var savedOrder = order;
+  orderEl.value = '';
 
   var out = document.getElementById('out');
   var job = document.createElement('div');
   job.className = 'job';
-  job.innerHTML = '<div class="jh"><span class="who">' + who + '</span><span class="stt">作業中…</span></div><div class="req">依頼：' + order.replace(/[<>&]/g,'') + '</div><div class="res"></div>';
+  job.setAttribute('data-id', id);
+  job.innerHTML = '<div class="jh"><span class="who">' + IX[id] + ' ' + NAMES[id] + '</span><span class="stt run">作業中…</span></div><div class="req">依頼：' + savedOrder.replace(/[<>&]/g,'') + '</div><div class="res"></div>';
   out.insertBefore(job, out.firstChild);
+  applyFilter();
   var res = job.getElementsByClassName('res')[0];
   var stt = job.getElementsByClassName('stt')[0];
 
+  var finish = function(){ btn.disabled = false; };
+
   if (GAS_URL.indexOf('PASTE') > -1) {
-    stt.textContent = '未設定';
+    stt.className = 'stt done'; stt.textContent = '未設定';
     res.textContent = 'GASのURLが未設定です。コード上部の GAS_URL に、あなたのウェブアプリURL（…/exec）を貼ってください。';
-    return;
+    finish(); return;
   }
 
   fetch(GAS_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({ system: SYS[id] + CTX, order: order })
+    body: JSON.stringify({ system: SYS[id] + CTX, order: savedOrder })
   })
   .then(function(r){ return r.json(); })
-  .then(function(d){ res.textContent = d.text || '(空の応答)'; stt.textContent = '完了'; })
-  .catch(function(e){ stt.textContent = 'エラー'; res.textContent = '実行できません：' + e.message + '\nGASのURLが正しいか、アクセスが「全員」かを確認してください。'; });
+  .then(function(d){
+    res.textContent = d.text || '(空の応答)';
+    stt.className = 'stt done'; stt.textContent = '完了';
+    var cp = document.createElement('button');
+    cp.className = 'copy'; cp.textContent = 'コピー';
+    cp.onclick = function(){ if(navigator.clipboard){navigator.clipboard.writeText(res.textContent);} cp.textContent = 'コピー済み ✓'; };
+    job.appendChild(cp);
+    counts[id] = (counts[id]||0) + 1; updateCounts();
+    finish();
+  })
+  .catch(function(e){
+    stt.className = 'stt err'; stt.textContent = 'エラー';
+    res.textContent = '実行できません：' + e.message + '\nGASのURLが正しいか、アクセスが「全員」かを確認してください。';
+    finish();
+  });
+}
+
+var cards = document.getElementById('depts').getElementsByClassName('dept');
+for (var i = 0; i < cards.length; i++) {
+  (function(card){
+    card.onclick = function(){
+      var id = card.getAttribute('data-id');
+      if (activeFilter === id) { showAll(); return; }
+      activeFilter = id;
+      for (var j = 0; j < cards.length; j++) cards[j].className = 'dept' + (cards[j].getAttribute('data-id')===id ? ' active' : '');
+      document.getElementById('filterbar').className = 'filterbar show';
+      document.getElementById('filterlabel').textContent = IX[id] + ' ' + NAMES[id] + ' の成果物を表示中';
+      applyFilter();
+    };
+  })(cards[i]);
+}
+function showAll(){
+  activeFilter = null;
+  for (var j = 0; j < cards.length; j++) cards[j].className = 'dept';
+  document.getElementById('filterbar').className = 'filterbar';
+  applyFilter();
+}
+function applyFilter(){
+  var jobs = document.getElementById('out').getElementsByClassName('job');
+  for (var k = 0; k < jobs.length; k++) {
+    var show = (!activeFilter || jobs[k].getAttribute('data-id') === activeFilter);
+    jobs[k].className = 'job' + (show ? '' : ' hide');
+  }
+}
+function updateCounts(){
+  for (var j = 0; j < cards.length; j++) {
+    var id = cards[j].getAttribute('data-id');
+    var c = cards[j].getElementsByClassName('cnt')[0];
+    c.textContent = counts[id] ? (counts[id] + '件') : '';
+  }
 }
 </script>
 </body>
