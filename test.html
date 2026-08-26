@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>動作テスト</title>
+<style>
+body{background:#16130E;color:#EDE6D6;font-family:sans-serif;text-align:center;padding:40px 20px}
+button{background:#C6A15B;color:#1c1810;border:none;border-radius:12px;padding:20px 30px;font-size:1.2rem;font-weight:700;cursor:pointer;margin-top:20px}
+#result{margin-top:30px;font-size:1.4rem;min-height:2em}
+</style>
+</head>
+<body>
+<h1>ボタン動作テスト</h1>
+<p>下のボタンを押してください。</p>
+<button onclick="document.getElementById('result').textContent='✅ 動きました！（' + new Date().toLocaleTimeString() + '）';">押す</button>
+<div id="result">まだ押していません</div>
+</body>
+</html>
