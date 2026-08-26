@@ -81,7 +81,7 @@
       <option value="bizdev">11 事業開発部</option>
     </select>
     <textarea id="order" placeholder="例：飲食店オーナー向けに、運営がバラバラな“痛み”のThreads投稿を1本つくって"></textarea>
-    <button class="go" id="runBtn">この部門を動かす</button>
+    <button class="go" id="runBtn" onclick="RUN()">この部門を動かす</button>
   </div>
 
   <div class="section-label">部門を選ぶ / DEPARTMENTS</div>
@@ -125,11 +125,11 @@ for(var i=0;i<cards.length;i++){(function(c){c.onclick=function(){sel.value=c.ge
 function mark(){for(var i=0;i<cards.length;i++){cards[i].className='dept'+(cards[i].getAttribute('data-id')===sel.value?' sel':'');}}
 sel.onchange=mark; mark();
 
-document.getElementById('runBtn').onclick=function(){
+function RUN(){
   var id=sel.value, order=document.getElementById('order').value.trim();
   if(!order){document.getElementById('order').focus();return;}
   var out=document.getElementById('out');
   var who=sel.options[sel.selectedIndex].text;
   var job=document.createElement('div'); job.className='job';
   job.innerHTML='<div class="jh"><span class="who">'+who+'</span><span class="stt">作業中…</span></div><div class="req">依頼：'+order.replace(/[&<>]/g,'')+'</div><div class="res"></div>';
-  out.insertBe
+  out.insertBefore(job,out.firstChil
