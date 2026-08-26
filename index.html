@@ -23,7 +23,7 @@
   .brand .sub{font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;color:var(--muted);text-transform:uppercase}
   .keybtn{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;color:var(--muted);background:var(--panel);
     border:1px solid var(--line);border-radius:100px;padding:7px 13px;cursor:pointer}
-  .keybox{display:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:8px 0 4px}
+  .keybox{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:8px 0 4px}
   .keybox.show{display:block}
   .keybox p{font-size:.76rem;color:var(--muted);margin-bottom:9px;line-height:1.6}
   .keybox input{width:100%;background:var(--void);border:1px solid var(--line);color:var(--cream);border-radius:8px;padding:11px;font-family:var(--mono);font-size:.8rem}
@@ -60,14 +60,10 @@
 <div class="wrap">
   <header>
     <div class="brand"><span class="star">✦</span><span class="name">Nalu-09</span><span class="sub">AI企業</span></div>
-    <button class="keybtn" id="keyToggle">APIキー設定</button>
+    
   </header>
-  <div class="keybox" id="keybox">
-    <p>各部門で本物のAIを動かすには、あなたのAnthropic APIキーを入れてください。未入力でも操作は確認できます。キーはこの端末内でのみ使い、送信・保存しません。</p>
-    <input id="apiKey" type="password" placeholder="sk-ant-... （任意）" autocomplete="off">
-    <div class="mini">※GitHub Pagesから直接呼ぶ簡易版のため、実運用では中継サーバー経由を推奨。</div>
-  </div>
-  <div class="ns"><span class="tag">★ 北極星</span><h1>飲食に留まらない、会員制事業の確立 ── 1日のすべてを、Nalu-09で</h1></div>
+  
+  <div class="ns"><span class="tag">★ 北極星</span><h1>飲食にとどまらない、会員制事業の確立。── 1日のすべてを、Nalu-09で。</h1></div>
 
   <div class="secretary">
     <div class="lbl">秘書・指揮官｜指示を出す</div>
@@ -104,10 +100,11 @@
   </div>
 
   <div class="out" id="out"></div>
-  <footer><div class="fmk">Nalu-09</div>社長は秘書1人に指示するだけ<br>合同会社Nalu-09専属 AI企業プラットフォーム</footer>
+  <footer><div class="fmk">Nalu-09</div>社長は秘書1人に指示するだけ。<br>AI企業プラットフォーム v1</footer>
 </div>
 
 <script>
+var GAS_URL="https://script.google.com/macros/s/AKfycbzCDC1FeOMmvpQbsIkyn2a7N5EIp4ofukT_q23dtfxoU-RKYNPEURTM-1JnjHEuhFhxLQ/exec"; // ← GASのウェブアプリURL（…/exec）をここに貼る
 var SYS={research:"あなたはNalu-09のリサーチ部AI。競合・市場・隙間を具体的簡潔に調査提案する。",
 content:"あなたはNalu-09のコンテンツ制作部AI。LIEN（会員・予約管理システム）を売る投稿を作る。押し売りせず、自分のイベントで実際に使う運営者の一人称。ハッシュタグ最大5個。",
 pm:"あなたはNalu-09の制作進行部AI。各カット/各スライドの文言・配置・秒数・色・遷移まで含む、Canvaに組める制作図を作る。",
@@ -121,7 +118,7 @@ legal:"あなたはNalu-09の法務部AI。個人情報・規約・プライバ�
 bizdev:"あなたはNalu-09の事業開発部AI。北極星（街の会員制生活基盤）に向けた次事業の種を構想する。"};
 var CTX="【前提】会員・予約管理システムLIENを売る。売った先の顧客データには触れない（憲法）。北極星は『街の会員制生活基盤＝1日すべてをNalu-09で』。社長は営業が苦手で会話を避けたい。発信はThreadsとInstagram。";
 
-document.getElementById('keyToggle').onclick=function(){document.getElementById('keybox').classList.toggle('show');};
+var _kt=document.getElementById('keyToggle'); if(_kt){_kt.onclick=function(){document.getElementById('keybox').classList.toggle('show');};}
 var sel=document.getElementById('depSelect');
 var cards=document.querySelectorAll('.dept');
 for(var i=0;i<cards.length;i++){(function(c){c.onclick=function(){sel.value=c.getAttribute('data-id');mark();};})(cards[i]);}
@@ -131,5 +128,8 @@ sel.onchange=mark; mark();
 document.getElementById('runBtn').onclick=function(){
   var id=sel.value, order=document.getElementById('order').value.trim();
   if(!order){document.getElementById('order').focus();return;}
-  var key=document.getElementById('apiKey').value.trim();
   var out=document.getElementById('out');
+  var who=sel.options[sel.selectedIndex].text;
+  var job=document.createElement('div'); job.className='job';
+  job.innerHTML='<div class="jh"><span class="who">'+who+'</span><span class="stt">作業中…</span></div><div class="req">依頼：'+order.replace(/[&<>]/g,'')+'</div><div class="res"></div>';
+  out.insertBe
