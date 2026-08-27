@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -36,14 +35,17 @@
   .dept .nm{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.94rem;margin:2px 0 4px}
   .dept .ds{font-size:.7rem;color:var(--muted);line-height:1.45}
   .dept .cnt{font-family:var(--mono);font-size:.56rem;color:var(--idle);margin-top:5px}
-  .filterbar{display:none;align-items:center;justify-content:space-between;margin:20px 2px 8px;font-size:.8rem;color:var(--muted)}
-  .filterbar.show{display:flex}
-  .filterbar button{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:5px 12px;font-family:inherit;font-size:.74rem;cursor:pointer}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 2px 8px;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
+  .bar .left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .bar button{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 12px;font-family:inherit;font-size:.74rem;cursor:pointer}
+  .bar button.danger{border-color:#7a4a3a;color:#E58B6E}
+  .bar button:disabled{opacity:.4;cursor:default}
   .out{margin-top:12px}
   .job{background:var(--panel);border:1px solid var(--line);border-radius:13px;margin-bottom:12px;overflow:hidden}
   .job.hide{display:none}
-  .job .jh{padding:12px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .job .who{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.92rem}
+  .job .jh{padding:12px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  .job .chk{width:17px;height:17px;flex:none;accent-color:var(--brass);cursor:pointer}
+  .job .who{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.92rem;flex:1}
   .job .stt{font-family:var(--mono);font-size:.6rem;padding:3px 9px;border-radius:100px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
   .job .stt.run{color:var(--brass);border-color:var(--brass-dim)}
   .job .stt.done{color:var(--void);background:var(--sage);border-color:var(--sage)}
@@ -94,17 +96,26 @@
     <div class="dept" data-id="bizdev"><div class="ix">11</div><div class="nm">事業開発部</div><div class="ds">次の事業の種</div><div class="cnt"></div></div>
   </div>
 
-  <div class="filterbar" id="filterbar"><span id="filterlabel"></span><button onclick="showAll()">すべて表示</button></div>
+  <div class="bar">
+    <div class="left">
+      <span id="filterlabel">すべての成果物</span>
+      <button id="showAllBtn" onclick="showAll()" style="display:none">すべて表示</button>
+    </div>
+    <div class="left">
+      <button onclick="selectAllVisible()">表示中を全選択</button>
+      <button class="danger" id="delBtn" onclick="deleteSelected()" disabled>選択したものを削除</button>
+    </div>
+  </div>
   <div class="out" id="out"></div>
-  <footer><div class="fmk">Nalu-09</div>社長は秘書1人に指示するだけ<br>AI企業プラットフォーム</footer>
+  <footer><div class="fmk">Nalu-09</div>社長は秘書1人に指示するだけ<br>AI企業プラットフォーム v4</footer>
 </div>
 
 <script>
 var GAS_URL = "https://script.google.com/macros/s/AKfycbzCDC1FeOMmvpQbsIkyn2a7N5EIp4ofukT_q23dtfxoU-RKYNPEURTM-1JnjHEuhFhxLQ/exec";
+var STORE_KEY = "nalu09_jobs";
 
 var NAMES = {research:"リサーチ部",content:"コンテンツ制作部",pm:"制作進行部",analytics:"分析部",offer:"オファー企画部",cs:"CS・配信部",support:"顧客対応部",finance:"経理・数値管理部",brand:"世界観管理部",legal:"法務・コンプラ部",bizdev:"事業開発部"};
 var IX = {research:"01",content:"02",pm:"03",analytics:"04",offer:"05",cs:"06",support:"07",finance:"08",brand:"09",legal:"10",bizdev:"11"};
-
 var SYS = {
   research:"あなたはNalu-09のリサーチ部AI。競合・市場・隙間を具体的簡潔に調査提案する。",
   content:"あなたはNalu-09のコンテンツ制作部AI。会員・予約管理システムLIENを売る投稿を作る。押し売りせず、自分のイベントで実際に使う運営者の一人称。ハッシュタグ最大5個。",
@@ -120,96 +131,123 @@ var SYS = {
 };
 var CTX = "【前提】会員・予約管理システムLIENを売る。売った先の顧客データには触れない。飲食にとどまらず会員制事業を確立するのが目標。社長は営業が苦手で会話を避けたい。発信はThreadsとInstagram。日本語でそのまま使える完成品を返す。前置きや途中で切らず、最後まで言い切って完成させる。";
 
-var counts = {};
+var jobs = [];            // 保存される成果物の配列
 var activeFilter = null;
 
-function RUN() {
+function load(){ try{ jobs = JSON.parse(localStorage.getItem(STORE_KEY)) || []; }catch(e){ jobs = []; } }
+function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(jobs)); }catch(e){} }
+
+function render(){
+  var out = document.getElementById('out');
+  out.innerHTML = '';
+  for (var i = 0; i < jobs.length; i++){
+    var j = jobs[i];
+    if (activeFilter && j.dep !== activeFilter) continue;
+    var el = document.createElement('div');
+    el.className = 'job';
+    var sttClass = j.status === 'done' ? 'stt done' : (j.status === 'err' ? 'stt err' : 'stt run');
+    var sttText = j.status === 'done' ? '完了' : (j.status === 'err' ? 'エラー' : '作業中…');
+    el.innerHTML =
+      '<div class="jh"><input type="checkbox" class="chk" data-i="'+i+'" onchange="onCheck()">' +
+      '<span class="who">'+IX[j.dep]+' '+NAMES[j.dep]+'</span>' +
+      '<span class="'+sttClass+'">'+sttText+'</span></div>' +
+      '<div class="req">依頼：'+esc(j.order)+'</div>' +
+      '<div class="res">'+esc(j.result)+'</div>' +
+      (j.status==='done' ? '<button class="copy" data-i="'+i+'" onclick="copyOne(this)">コピー</button>' : '');
+    out.appendChild(el);
+  }
+  updateCounts();
+  updateDelBtn();
+}
+function esc(s){ s = s==null?'':(''+s); return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function RUN(){
   var btn = document.getElementById('goBtn');
   if (btn.disabled) return;
   var id = document.getElementById('dep').value;
   var orderEl = document.getElementById('order');
   var order = orderEl.value;
-  if (!order) { orderEl.focus(); return; }
-
+  if (!order){ orderEl.focus(); return; }
   btn.disabled = true;
-  var savedOrder = order;
   orderEl.value = '';
 
-  var out = document.getElementById('out');
-  var job = document.createElement('div');
-  job.className = 'job';
-  job.setAttribute('data-id', id);
-  job.innerHTML = '<div class="jh"><span class="who">' + IX[id] + ' ' + NAMES[id] + '</span><span class="stt run">作業中…</span></div><div class="req">依頼：' + savedOrder.replace(/[<>&]/g,'') + '</div><div class="res"></div>';
-  out.insertBefore(job, out.firstChild);
-  applyFilter();
-  var res = job.getElementsByClassName('res')[0];
-  var stt = job.getElementsByClassName('stt')[0];
+  var job = { dep:id, order:order, result:'', status:'run', t:Date.now() };
+  jobs.unshift(job);
+  save(); render();
 
-  var finish = function(){ btn.disabled = false; };
+  var finish = function(){ btn.disabled = false; save(); render(); };
 
-  if (GAS_URL.indexOf('PASTE') > -1) {
-    stt.className = 'stt done'; stt.textContent = '未設定';
-    res.textContent = 'GASのURLが未設定です。コード上部の GAS_URL に、あなたのウェブアプリURL（…/exec）を貼ってください。';
+  if (GAS_URL.indexOf('PASTE') > -1){
+    job.status='done'; job.result='GASのURLが未設定です。コード上部の GAS_URL に、あなたのウェブアプリURL（…/exec）を貼ってください。';
     finish(); return;
   }
-
-  fetch(GAS_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({ system: SYS[id] + CTX, order: savedOrder })
-  })
+  fetch(GAS_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ system: SYS[id] + CTX, order: order }) })
   .then(function(r){ return r.json(); })
-  .then(function(d){
-    res.textContent = d.text || '(空の応答)';
-    stt.className = 'stt done'; stt.textContent = '完了';
-    var cp = document.createElement('button');
-    cp.className = 'copy'; cp.textContent = 'コピー';
-    cp.onclick = function(){ if(navigator.clipboard){navigator.clipboard.writeText(res.textContent);} cp.textContent = 'コピー済み ✓'; };
-    job.appendChild(cp);
-    counts[id] = (counts[id]||0) + 1; updateCounts();
-    finish();
-  })
-  .catch(function(e){
-    stt.className = 'stt err'; stt.textContent = 'エラー';
-    res.textContent = '実行できません：' + e.message + '\nGASのURLが正しいか、アクセスが「全員」かを確認してください。';
-    finish();
-  });
+  .then(function(d){ job.status='done'; job.result = d.text || '(空の応答)'; finish(); })
+  .catch(function(e){ job.status='err'; job.result = '実行できません：'+e.message+'\nGASのURLが正しいか、アクセスが「全員」かを確認してください。'; finish(); });
 }
 
-var cards = document.getElementById('depts').getElementsByClassName('dept');
-for (var i = 0; i < cards.length; i++) {
-  (function(card){
-    card.onclick = function(){
-      var id = card.getAttribute('data-id');
-      if (activeFilter === id) { showAll(); return; }
-      activeFilter = id;
-      for (var j = 0; j < cards.length; j++) cards[j].className = 'dept' + (cards[j].getAttribute('data-id')===id ? ' active' : '');
-      document.getElementById('filterbar').className = 'filterbar show';
-      document.getElementById('filterlabel').textContent = IX[id] + ' ' + NAMES[id] + ' の成果物を表示中';
-      applyFilter();
-    };
-  })(cards[i]);
+function copyOne(btn){
+  var i = +btn.getAttribute('data-i');
+  if (navigator.clipboard) navigator.clipboard.writeText(jobs[i].result);
+  btn.textContent = 'コピー済み ✓';
+  setTimeout(function(){ btn.textContent='コピー'; }, 1500);
 }
+
+// 部門カード → 絞り込み
+var cards = document.getElementById('depts').getElementsByClassName('dept');
+for (var i=0;i<cards.length;i++){ (function(card){
+  card.onclick = function(){
+    var id = card.getAttribute('data-id');
+    if (activeFilter === id){ showAll(); return; }
+    activeFilter = id;
+    for (var j=0;j<cards.length;j++) cards[j].className = 'dept'+(cards[j].getAttribute('data-id')===id?' active':'');
+    document.getElementById('filterlabel').textContent = IX[id]+' '+NAMES[id]+' の成果物';
+    document.getElementById('showAllBtn').style.display = '';
+    render();
+  };
+})(cards[i]); }
 function showAll(){
   activeFilter = null;
-  for (var j = 0; j < cards.length; j++) cards[j].className = 'dept';
-  document.getElementById('filterbar').className = 'filterbar';
-  applyFilter();
-}
-function applyFilter(){
-  var jobs = document.getElementById('out').getElementsByClassName('job');
-  for (var k = 0; k < jobs.length; k++) {
-    var show = (!activeFilter || jobs[k].getAttribute('data-id') === activeFilter);
-    jobs[k].className = 'job' + (show ? '' : ' hide');
-  }
+  for (var j=0;j<cards.length;j++) cards[j].className='dept';
+  document.getElementById('filterlabel').textContent = 'すべての成果物';
+  document.getElementById('showAllBtn').style.display = 'none';
+  render();
 }
 function updateCounts(){
-  for (var j = 0; j < cards.length; j++) {
+  var c = {};
+  for (var i=0;i<jobs.length;i++){ c[jobs[i].dep] = (c[jobs[i].dep]||0)+1; }
+  for (var j=0;j<cards.length;j++){
     var id = cards[j].getAttribute('data-id');
-    var c = cards[j].getElementsByClassName('cnt')[0];
-    c.textContent = counts[id] ? (counts[id] + '件') : '';
+    cards[j].getElementsByClassName('cnt')[0].textContent = c[id] ? (c[id]+'件') : '';
   }
 }
+
+// 選択・削除
+function checkedBoxes(){ return document.querySelectorAll('.chk:checked'); }
+function onCheck(){ updateDelBtn(); }
+function updateDelBtn(){ document.getElementById('delBtn').disabled = checkedBoxes().length === 0; }
+function selectAllVisible(){
+  var all = document.querySelectorAll('.chk');
+  var anyUnchecked = false;
+  for (var i=0;i<all.length;i++){ if(!all[i].checked){ anyUnchecked=true; break; } }
+  for (var i=0;i<all.length;i++){ all[i].checked = anyUnchecked; }
+  updateDelBtn();
+}
+function deleteSelected(){
+  var boxes = checkedBoxes();
+  if (boxes.length === 0) return;
+  if (!confirm('選択した ' + boxes.length + ' 件を削除します。よろしいですか？')) return;
+  var idx = [];
+  for (var i=0;i<boxes.length;i++){ idx.push(+boxes[i].getAttribute('data-i')); }
+  idx.sort(function(a,b){ return b-a; });
+  for (var i=0;i<idx.length;i++){ jobs.splice(idx[i],1); }
+  save(); render();
+}
+
+load();
+render();
 </script>
 </body>
 </html>
