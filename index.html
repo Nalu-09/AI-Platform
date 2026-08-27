@@ -21,20 +21,22 @@
   .ns h1{font-family:"Shippori Mincho",serif;font-weight:700;font-size:1.05rem;margin-top:3px}
   .box{background:var(--panel2);border:1px solid var(--brass-dim);border-radius:14px;padding:16px;margin-bottom:18px}
   .box .lbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;color:var(--brass);text-transform:uppercase;margin-bottom:9px}
-  select,textarea{width:100%;background:var(--void);border:1px solid var(--line);color:var(--cream);border-radius:9px;padding:11px 12px;font-family:inherit;font-size:.9rem;margin-bottom:9px}
-  textarea{min-height:72px;resize:vertical;line-height:1.6}
+  textarea{width:100%;background:var(--void);border:1px solid var(--line);color:var(--cream);border-radius:9px;padding:11px 12px;font-family:inherit;font-size:.9rem;margin-bottom:9px;min-height:80px;resize:vertical;line-height:1.6}
   .go{width:100%;background:var(--brass);color:#1c1810;border:none;border-radius:10px;padding:14px;font-family:inherit;font-weight:700;font-size:.95rem;cursor:pointer}
   .go:disabled{opacity:.5;cursor:default}
+  .hint{font-size:.72rem;color:var(--muted);margin-top:2px}
   .sl{font-family:var(--mono);font-size:.62rem;letter-spacing:.24em;color:var(--muted);text-transform:uppercase;margin:0 2px 11px;display:flex;align-items:center;gap:10px}
   .sl::after{content:"";flex:1;height:1px;background:var(--line)}
-  .depts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-  .dept{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass-dim);border-radius:11px;padding:12px 13px;cursor:pointer;transition:border-color .16s,background .16s}
+  .depts{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px}
+  .dept{position:relative;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass-dim);border-radius:11px;padding:12px 13px;cursor:pointer;transition:border-color .16s,background .16s,box-shadow .3s}
   .dept:hover{border-color:var(--brass-dim);background:var(--panel2)}
   .dept.active{border-color:var(--brass);border-left-color:var(--brass);background:var(--panel2)}
+  .dept.flash{box-shadow:0 0 0 2px var(--brass),0 0 18px rgba(198,161,91,.5);border-color:var(--brass)}
   .dept .ix{font-family:var(--mono);font-size:.58rem;color:var(--brass-dim)}
-  .dept .nm{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.94rem;margin:2px 0 4px}
-  .dept .ds{font-size:.7rem;color:var(--muted);line-height:1.45}
-  .dept .cnt{font-family:var(--mono);font-size:.56rem;color:var(--idle);margin-top:5px}
+  .dept .nm{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.92rem;margin:2px 0 3px}
+  .dept .ds{font-size:.68rem;color:var(--muted);line-height:1.4}
+  .dept .badge{position:absolute;top:9px;right:9px;min-width:20px;height:20px;padding:0 5px;border-radius:100px;background:var(--brass);color:#1c1810;font-family:var(--mono);font-size:.62rem;font-weight:700;display:none;align-items:center;justify-content:center;line-height:20px;text-align:center}
+  .dept .badge.show{display:inline-flex}
   .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 2px 8px;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
   .bar .left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .bar button{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 12px;font-family:inherit;font-size:.74rem;cursor:pointer}
@@ -43,6 +45,9 @@
   .out{margin-top:12px}
   .job{background:var(--panel);border:1px solid var(--line);border-radius:13px;margin-bottom:12px;overflow:hidden}
   .job.hide{display:none}
+  .job .route{padding:11px 15px;font-size:.82rem;color:var(--brass);border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(198,161,91,.05),transparent);display:flex;align-items:center;gap:8px}
+  .job .route .spin{width:11px;height:11px;border:2px solid var(--brass-dim);border-top-color:var(--brass);border-radius:50%;animation:sp .7s linear infinite;flex:none}
+  @keyframes sp{to{transform:rotate(360deg)}}
   .job .jh{padding:12px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
   .job .chk{width:17px;height:17px;flex:none;accent-color:var(--brass);cursor:pointer}
   .job .who{font-family:"Shippori Mincho",serif;font-weight:600;font-size:.92rem;flex:1}
@@ -63,191 +68,126 @@
   <div class="ns"><span class="tag">★ 北極星</span><h1>飲食にとどまらない、会員制事業の確立 ── 1日のすべてを、Nalu-09で</h1></div>
 
   <div class="box">
-    <div class="lbl">秘書・指揮官｜指示を出す</div>
-    <select id="dep">
-      <option value="research">01 リサーチ部</option>
-      <option value="content">02 コンテンツ制作部</option>
-      <option value="pm">03 制作進行部</option>
-      <option value="analytics">04 分析部</option>
-      <option value="offer">05 オファー企画部</option>
-      <option value="cs">06 CS・配信部</option>
-      <option value="support">07 顧客対応部</option>
-      <option value="finance">08 経理・数値管理部</option>
-      <option value="brand">09 世界観管理部</option>
-      <option value="legal">10 法務・コンプラ部</option>
-      <option value="bizdev">11 事業開発部</option>
-    </select>
-    <textarea id="order" placeholder="例：飲食店オーナー向けに、運営がバラバラな痛みのThreads投稿を1本つくって"></textarea>
-    <button class="go" id="goBtn" onclick="RUN()">この部門を動かす</button>
+    <div class="lbl">秘書・指揮官｜やりたいことを話す</div>
+    <textarea id="order" placeholder="例：飲食店オーナーに刺さるThreads投稿を1本作って／競合を調べて／LINEの配信文を書いて"></textarea>
+    <button class="go" id="goBtn" onclick="RUN()">秘書に依頼する</button>
+    <div class="hint">部門は選ばなくてOK<br>秘書がどの部門の案件か判断して振り分けます。<br>下の部門カードを押すと、その部門の成果物だけ見返せます。</div>
   </div>
 
-  <div class="sl">部門を選ぶ / DEPARTMENTS</div>
-  <div class="depts" id="depts">
-    <div class="dept" data-id="research"><div class="ix">01</div><div class="nm">リサーチ部</div><div class="ds">競合・トレンド・隙間</div><div class="cnt"></div></div>
-    <div class="dept" data-id="content"><div class="ix">02</div><div class="nm">コンテンツ制作部</div><div class="ds">投稿・キャプション</div><div class="cnt"></div></div>
-    <div class="dept" data-id="pm"><div class="ix">03</div><div class="nm">制作進行部</div><div class="ds">動画・画像の制作図</div><div class="cnt"></div></div>
-    <div class="dept" data-id="analytics"><div class="ix">04</div><div class="nm">分析部</div><div class="ds">数値→次の方針</div><div class="cnt"></div></div>
-    <div class="dept" data-id="offer"><div class="ix">05</div><div class="nm">オファー企画部</div><div class="ds">商品・料金・入口</div><div class="cnt"></div></div>
-    <div class="dept" data-id="cs"><div class="ix">06</div><div class="nm">CS・配信部</div><div class="ds">LINE配信・返信文</div><div class="cnt"></div></div>
-    <div class="dept" data-id="support"><div class="ix">07</div><div class="nm">顧客対応部</div><div class="ds">DM・問い合わせ返信</div><div class="cnt"></div></div>
-    <div class="dept" data-id="finance"><div class="ix">08</div><div class="nm">経理・数値管理部</div><div class="ds">売上・費用の管理</div><div class="cnt"></div></div>
-    <div class="dept" data-id="brand"><div class="ix">09</div><div class="nm">世界観管理部</div><div class="ds">トーン・世界観の統一</div><div class="cnt"></div></div>
-    <div class="dept" data-id="legal"><div class="ix">10</div><div class="nm">法務・コンプラ部</div><div class="ds">規約・個人情報</div><div class="cnt"></div></div>
-    <div class="dept" data-id="bizdev"><div class="ix">11</div><div class="nm">事業開発部</div><div class="ds">次の事業の種</div><div class="cnt"></div></div>
-  </div>
+  <div class="sl">部門（クリックで絞り込み） / DEPARTMENTS</div>
+  <div class="depts" id="depts"></div>
 
   <div class="bar">
-    <div class="left">
-      <span id="filterlabel">すべての成果物</span>
-      <button id="showAllBtn" onclick="showAll()" style="display:none">すべて表示</button>
-    </div>
-    <div class="left">
-      <button onclick="selectAllVisible()">表示中を全選択</button>
-      <button class="danger" id="delBtn" onclick="deleteSelected()" disabled>選択したものを削除</button>
-    </div>
+    <div class="left"><span id="filterlabel">すべての成果物</span><button id="showAllBtn" onclick="showAll()" style="display:none">すべて表示</button></div>
+    <div class="left"><button onclick="selectAllVisible()">表示中を全選択</button><button class="danger" id="delBtn" onclick="deleteSelected()" disabled>選択したものを削除</button></div>
   </div>
   <div class="out" id="out"></div>
-  <footer><div class="fmk">Nalu-09</div>社長は秘書1人に指示するだけ<br>AI企業プラットフォーム v4</footer>
+  <footer><div class="fmk">Nalu-09</div>社長は秘書1人に依頼するだけ<br>AI企業プラットフォーム ver.6</footer>
 </div>
 
 <script>
-var GAS_URL = "https://script.google.com/macros/s/AKfycbzCDC1FeOMmvpQbsIkyn2a7N5EIp4ofukT_q23dtfxoU-RKYNPEURTM-1JnjHEuhFhxLQ/exec";
-var STORE_KEY = "nalu09_jobs";
-
-var NAMES = {research:"リサーチ部",content:"コンテンツ制作部",pm:"制作進行部",analytics:"分析部",offer:"オファー企画部",cs:"CS・配信部",support:"顧客対応部",finance:"経理・数値管理部",brand:"世界観管理部",legal:"法務・コンプラ部",bizdev:"事業開発部"};
-var IX = {research:"01",content:"02",pm:"03",analytics:"04",offer:"05",cs:"06",support:"07",finance:"08",brand:"09",legal:"10",bizdev:"11"};
-var SYS = {
-  research:"あなたはNalu-09のリサーチ部AI。競合・市場・隙間を具体的簡潔に調査提案する。",
-  content:"あなたはNalu-09のコンテンツ制作部AI。会員・予約管理システムLIENを売る投稿を作る。押し売りせず、自分のイベントで実際に使う運営者の一人称。ハッシュタグ最大5個。",
-  pm:"あなたはNalu-09の制作進行部AI。各カット/各スライドの文言・配置・秒数・色・遷移まで含む、Canvaに組める制作図を作る。",
-  analytics:"あなたはNalu-09の分析部AI。数値から伸ばす型・捨てる型を断定的に提案する。",
-  offer:"あなたはNalu-09のオファー企画部AI。商品設計・料金の見せ方・リードマグネット・入口商品を設計する。",
-  cs:"あなたはNalu-09のCS・配信部AI。LINE配信文・フォーム・タグ設計・返信下書きを作る。",
-  support:"あなたはNalu-09の顧客対応部AI。DM・問い合わせへの丁寧で売り込みすぎない返信下書きを作る。",
-  finance:"あなたはNalu-09の経理部AI。売上・広告費・ツール代の整理と収支の考え方を簡潔に示す。",
-  brand:"あなたはNalu-09の世界観管理部AI。Lumière（灯り）の世界観で言葉・色・トーンを統一監修する。",
-  legal:"あなたはNalu-09の法務部AI。個人情報・規約・プライバシーの注意点と整備を示す。弁護士ではなく最終判断は専門家に、と添える。",
-  bizdev:"あなたはNalu-09の事業開発部AI。飲食にとどまらない会員制事業の確立に向けた次事業の種を構想する。"
-};
-var CTX = "【前提】会員・予約管理システムLIENを売る。売った先の顧客データには触れない。飲食にとどまらず会員制事業を確立するのが目標。社長は営業が苦手で会話を避けたい。発信はThreadsとInstagram。日本語でそのまま使える完成品を返す。前置きや途中で切らず、最後まで言い切って完成させる。";
-
-var jobs = [];            // 保存される成果物の配列
+var GAS_URL = "PASTE_YOUR_GAS_URL_HERE";
+var STORE_KEY = "nalu09_jobs_v6";
+var jobs = [];
 var activeFilter = null;
 
-function load(){ try{ jobs = JSON.parse(localStorage.getItem(STORE_KEY)) || []; }catch(e){ jobs = []; } }
+var ORDER = ["research","content","pm","analytics","offer","cs","support","finance","brand","legal","bizdev"];
+var NAMES = {research:"リサーチ部",content:"コンテンツ制作部",pm:"制作進行部",analytics:"分析部",offer:"オファー企画部",cs:"CS・配信部",support:"顧客対応部",finance:"経理・数値管理部",brand:"世界観管理部",legal:"法務・コンプラ部",bizdev:"事業開発部"};
+var IX = {research:"01",content:"02",pm:"03",analytics:"04",offer:"05",cs:"06",support:"07",finance:"08",brand:"09",legal:"10",bizdev:"11"};
+var DS = {research:"競合・トレンド・隙間",content:"投稿・キャプション・プロフィール",pm:"動画・画像の制作図",analytics:"数値→次の方針",offer:"商品・料金・入口",cs:"LINE配信・返信文",support:"DM・問い合わせ返信",finance:"売上・費用の管理",brand:"トーン・世界観の統一",legal:"規約・個人情報",bizdev:"次の事業の種"};
+
+function nameToId(name){ for(var k in NAMES) if(NAMES[k]===name) return k; return null; }
+function load(){ try{ jobs=JSON.parse(localStorage.getItem(STORE_KEY))||[]; }catch(e){ jobs=[]; } }
 function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(jobs)); }catch(e){} }
+function esc(s){ s=s==null?'':(''+s); return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// 部門カードを描画
+(function buildDepts(){
+  var d=document.getElementById('depts');
+  for (var i=0;i<ORDER.length;i++){
+    var id=ORDER[i], el=document.createElement('div');
+    el.className='dept'; el.setAttribute('data-id',id);
+    el.innerHTML='<span class="badge" data-badge="'+id+'"></span><div class="ix">'+IX[id]+'</div><div class="nm">'+NAMES[id]+'</div><div class="ds">'+DS[id]+'</div>';
+    (function(cid){ el.onclick=function(){ toggleFilter(cid); }; })(id);
+    d.appendChild(el);
+  }
+})();
+
+function counts(){ var c={}; for(var i=0;i<jobs.length;i++){ var id=nameToId(jobs[i].name); if(id) c[id]=(c[id]||0)+1; } return c; }
+function updateBadges(){
+  var c=counts();
+  var b=document.querySelectorAll('.badge');
+  for (var i=0;i<b.length;i++){ var id=b[i].getAttribute('data-badge'); if(c[id]){ b[i].textContent=c[id]; b[i].className='badge show'; } else { b[i].textContent=''; b[i].className='badge'; } }
+}
+function flash(id){ var el=document.querySelector('.dept[data-id="'+id+'"]'); if(!el)return; el.classList.add('flash'); setTimeout(function(){ el.classList.remove('flash'); },1400); }
 
 function render(){
-  var out = document.getElementById('out');
-  out.innerHTML = '';
-  for (var i = 0; i < jobs.length; i++){
-    var j = jobs[i];
-    if (activeFilter && j.dep !== activeFilter) continue;
-    var el = document.createElement('div');
-    el.className = 'job';
-    var sttClass = j.status === 'done' ? 'stt done' : (j.status === 'err' ? 'stt err' : 'stt run');
-    var sttText = j.status === 'done' ? '完了' : (j.status === 'err' ? 'エラー' : '作業中…');
-    el.innerHTML =
-      '<div class="jh"><input type="checkbox" class="chk" data-i="'+i+'" onchange="onCheck()">' +
-      '<span class="who">'+IX[j.dep]+' '+NAMES[j.dep]+'</span>' +
-      '<span class="'+sttClass+'">'+sttText+'</span></div>' +
-      '<div class="req">依頼：'+esc(j.order)+'</div>' +
-      '<div class="res">'+esc(j.result)+'</div>' +
-      (j.status==='done' ? '<button class="copy" data-i="'+i+'" onclick="copyOne(this)">コピー</button>' : '');
-    out.appendChild(el);
+  var out=document.getElementById('out'); out.innerHTML='';
+  for (var i=0;i<jobs.length;i++){
+    var j=jobs[i]; var jid=nameToId(j.name);
+    if (activeFilter && jid!==activeFilter) continue;
+    var el=document.createElement('div'); el.className='job'; var html='';
+    if (j.phase==='routing') html+='<div class="route"><span class="spin"></span>秘書が担当部門を判断中…</div>';
+    else if (j.name) html+='<div class="route">この依頼は〈'+esc(j.name)+'〉の案件です。担当部門に振りました。</div>';
+    var sc=j.status==='done'?'stt done':(j.status==='err'?'stt err':'stt run');
+    var stx=j.status==='done'?'完了':(j.status==='err'?'エラー':'作業中…');
+    var who=j.name?esc(j.name):'秘書';
+    html+='<div class="jh"><input type="checkbox" class="chk" data-i="'+i+'" onchange="onCheck()"><span class="who">'+who+'</span><span class="'+sc+'">'+stx+'</span></div>';
+    html+='<div class="req">依頼：'+esc(j.order)+'</div>';
+    if (j.result) html+='<div class="res">'+esc(j.result)+'</div>';
+    if (j.status==='done'&&j.result) html+='<button class="copy" data-i="'+i+'" onclick="copyOne(this)">コピー</button>';
+    el.innerHTML=html; out.appendChild(el);
   }
-  updateCounts();
-  updateDelBtn();
+  updateBadges(); updateDelBtn();
 }
-function esc(s){ s = s==null?'':(''+s); return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function RUN(){
-  var btn = document.getElementById('goBtn');
-  if (btn.disabled) return;
-  var id = document.getElementById('dep').value;
-  var orderEl = document.getElementById('order');
-  var order = orderEl.value;
-  if (!order){ orderEl.focus(); return; }
-  btn.disabled = true;
-  orderEl.value = '';
+  var btn=document.getElementById('goBtn'); if(btn.disabled) return;
+  var el=document.getElementById('order'); var order=el.value;
+  if(!order){ el.focus(); return; }
+  btn.disabled=true; el.value='';
+  var job={ order:order, name:'', phase:'routing', status:'run', result:'', t:Date.now() };
+  jobs.unshift(job); save(); render();
+  var finish=function(){ btn.disabled=false; save(); render(); };
 
-  var job = { dep:id, order:order, result:'', status:'run', t:Date.now() };
-  jobs.unshift(job);
-  save(); render();
+  if (GAS_URL.indexOf('PASTE')>-1){ job.phase='done'; job.name='設定エラー'; job.status='done'; job.result='GASのURLが未設定です。コード上部の GAS_URL に…/exec を貼ってください。'; finish(); return; }
 
-  var finish = function(){ btn.disabled = false; save(); render(); };
-
-  if (GAS_URL.indexOf('PASTE') > -1){
-    job.status='done'; job.result='GASのURLが未設定です。コード上部の GAS_URL に、あなたのウェブアプリURL（…/exec）を貼ってください。';
-    finish(); return;
-  }
-  fetch(GAS_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body: JSON.stringify({ system: SYS[id] + CTX, order: order }) })
-  .then(function(r){ return r.json(); })
-  .then(function(d){ job.status='done'; job.result = d.text || '(空の応答)'; finish(); })
-  .catch(function(e){ job.status='err'; job.result = '実行できません：'+e.message+'\nGASのURLが正しいか、アクセスが「全員」かを確認してください。'; finish(); });
+  fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'route',order:order})})
+  .then(function(r){return r.json();})
+  .then(function(d){
+    job.name=d.name||'コンテンツ制作部'; job.phase='running'; save(); render();
+    var id=nameToId(job.name); if(id) flash(id);
+    return fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'run',dep:d.dep,order:order})});
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){ job.result=d.text||'(空の応答)'; job.status='done'; var id=nameToId(job.name); if(id) flash(id); finish(); })
+  .catch(function(e){ job.status='err'; job.result='実行できません：'+e.message+'\nGASのURLとアクセス「全員」を確認してください。'; finish(); });
 }
 
-function copyOne(btn){
-  var i = +btn.getAttribute('data-i');
-  if (navigator.clipboard) navigator.clipboard.writeText(jobs[i].result);
-  btn.textContent = 'コピー済み ✓';
-  setTimeout(function(){ btn.textContent='コピー'; }, 1500);
-}
-
-// 部門カード → 絞り込み
-var cards = document.getElementById('depts').getElementsByClassName('dept');
-for (var i=0;i<cards.length;i++){ (function(card){
-  card.onclick = function(){
-    var id = card.getAttribute('data-id');
-    if (activeFilter === id){ showAll(); return; }
-    activeFilter = id;
-    for (var j=0;j<cards.length;j++) cards[j].className = 'dept'+(cards[j].getAttribute('data-id')===id?' active':'');
-    document.getElementById('filterlabel').textContent = IX[id]+' '+NAMES[id]+' の成果物';
-    document.getElementById('showAllBtn').style.display = '';
-    render();
-  };
-})(cards[i]); }
-function showAll(){
-  activeFilter = null;
-  for (var j=0;j<cards.length;j++) cards[j].className='dept';
-  document.getElementById('filterlabel').textContent = 'すべての成果物';
-  document.getElementById('showAllBtn').style.display = 'none';
+function toggleFilter(id){
+  if (activeFilter===id){ showAll(); return; }
+  activeFilter=id;
+  var all=document.querySelectorAll('.dept');
+  for (var i=0;i<all.length;i++) all[i].classList.toggle('active', all[i].getAttribute('data-id')===id);
+  document.getElementById('filterlabel').textContent=IX[id]+' '+NAMES[id]+' の成果物';
+  document.getElementById('showAllBtn').style.display='';
   render();
 }
-function updateCounts(){
-  var c = {};
-  for (var i=0;i<jobs.length;i++){ c[jobs[i].dep] = (c[jobs[i].dep]||0)+1; }
-  for (var j=0;j<cards.length;j++){
-    var id = cards[j].getAttribute('data-id');
-    cards[j].getElementsByClassName('cnt')[0].textContent = c[id] ? (c[id]+'件') : '';
-  }
+function showAll(){
+  activeFilter=null;
+  var all=document.querySelectorAll('.dept'); for(var i=0;i<all.length;i++) all[i].classList.remove('active');
+  document.getElementById('filterlabel').textContent='すべての成果物';
+  document.getElementById('showAllBtn').style.display='none';
+  render();
 }
-
-// 選択・削除
+function copyOne(btn){ var i=+btn.getAttribute('data-i'); if(navigator.clipboard)navigator.clipboard.writeText(jobs[i].result); btn.textContent='コピー済み ✓'; setTimeout(function(){btn.textContent='コピー';},1500); }
 function checkedBoxes(){ return document.querySelectorAll('.chk:checked'); }
 function onCheck(){ updateDelBtn(); }
-function updateDelBtn(){ document.getElementById('delBtn').disabled = checkedBoxes().length === 0; }
-function selectAllVisible(){
-  var all = document.querySelectorAll('.chk');
-  var anyUnchecked = false;
-  for (var i=0;i<all.length;i++){ if(!all[i].checked){ anyUnchecked=true; break; } }
-  for (var i=0;i<all.length;i++){ all[i].checked = anyUnchecked; }
-  updateDelBtn();
-}
-function deleteSelected(){
-  var boxes = checkedBoxes();
-  if (boxes.length === 0) return;
-  if (!confirm('選択した ' + boxes.length + ' 件を削除します。よろしいですか？')) return;
-  var idx = [];
-  for (var i=0;i<boxes.length;i++){ idx.push(+boxes[i].getAttribute('data-i')); }
-  idx.sort(function(a,b){ return b-a; });
-  for (var i=0;i<idx.length;i++){ jobs.splice(idx[i],1); }
-  save(); render();
-}
+function updateDelBtn(){ document.getElementById('delBtn').disabled=checkedBoxes().length===0; }
+function selectAllVisible(){ var all=document.querySelectorAll('.chk'),u=false; for(var i=0;i<all.length;i++)if(!all[i].checked){u=true;break;} for(var i=0;i<all.length;i++)all[i].checked=u; updateDelBtn(); }
+function deleteSelected(){ var b=checkedBoxes(); if(!b.length)return; if(!confirm('選択した '+b.length+' 件を削除します。よろしいですか？'))return; var idx=[]; for(var i=0;i<b.length;i++)idx.push(+b[i].getAttribute('data-i')); idx.sort(function(a,b){return b-a;}); for(var i=0;i<idx.length;i++)jobs.splice(idx[i],1); save(); render(); }
 
-load();
-render();
+load(); render();
 </script>
 </body>
 </html>
